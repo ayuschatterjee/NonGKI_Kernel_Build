@@ -131,7 +131,7 @@ jobs:
 
           # Set KernelSU(Manual)
           git clone ${{ env.KERNELSU_SOURCE }} -b ${{ env.KERNELSU_BRANCH }} ${{ env.KERNELSU_NAME }}
-          mkdir -p "$KERNEL_LOCATION/drivers/kernelsu" && git clone --depth=1 --filter=blob:none --sparse https://github.com/SOVIET-ANDROID/kernel_xiaomi_raphael tmp_ksu && cd tmp_ksu && git sparse-checkout set drivers/kernelsu && cp -r drivers/kernelsu/* "$KERNEL_LOCATION/drivers/kernelsu/" && cd .. && rm -rf tmp_ksu
+          mkdir -p "$KERNEL_LOCATION/drivers/kernelsu" && git clone --depth=1 --filter=blob:none --sparse -b 15.0 https://github.com/SOVIET-ANDROID/kernel_xiaomi_raphael tmp_ksu && cd tmp_ksu && git sparse-checkout set drivers/kernelsu && cp -r drivers/kernelsu/* "$KERNEL_LOCATION/drivers/kernelsu/" && cd .. && rm -rf tmp_ksu
           ln -sf "$(realpath --relative-to="$KERNEL_LOCATION/drivers" "$KERNEL_LOCATION/${{ env.KERNELSU_NAME }}/kernel")" "kernelsu"
           grep -q "kernelsu" "$KERNEL_LOCATION/drivers/Makefile" || printf "\nobj-\$(CONFIG_KSU) += kernelsu/\n" >> $KERNEL_LOCATION/drivers/Makefile
           grep -q "source \"drivers/kernelsu/Kconfig\"" "$KERNEL_LOCATION/drivers/Kconfig" || sed -i "/endmenu/i\source \"drivers/kernelsu/Kconfig\"" "$KERNEL_LOCATION/drivers/Kconfig"
